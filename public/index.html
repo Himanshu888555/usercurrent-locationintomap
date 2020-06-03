@@ -61,6 +61,14 @@
                 document.getElementById("longitude").textContent=lon.toFixed(2);
                 document.getElementById("accuracy").textContent=acu;
 
+
+
+                setInterval((lat,lon)=>{
+                    lat=position.coords.latitude;
+                lon=position.coords.longitude;
+
+                console.log(lat,lon);
+                },1000);
             })
         }
         else{
