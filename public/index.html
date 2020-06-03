@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+    crossorigin=""></script>
+
+
+    <style>
+        #mapid {
+            height: 180px; 
+            }
+    </style>
+
+</head>
+<body>
+    <h1>Users Location</h1>
+
+    <p>latitude:<span id="latitude"></span>&deg;<br /></p>
+    <p>longitude:<span id="longitude"></span>&deg;<br /></p>
+    <p>accuracy:<span id="accuracy"></span><br /></p>
+
+    <div id="mapid"></div>
+
+
+
+    <script>
+
+        const mymap = L.map('mapid').setView([0, 0], 13);
+        const attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors';
+
+        const tileurl= 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    
+        const tile= L.tileLayer(tileurl,{attribution});
+        tile.addTo(mymap);
+
+
+        const marker=L.marker([0,0]).addTo(mymap);
+
+        if('geolocation' in navigator){
+            console.log("geolocation is available");
+            navigator.geolocation.getCurrentPosition(position=>{
+                console.log(position);
+
+                const lat=position.coords.latitude;
+                const lon=position.coords.longitude;
+                const acu = position.coords.accuracy;
+
+                marker.setLatLng([lat,lon]);
+                mymap.setView([lat,lon]);
+
+                document.getElementById("latitude").textContent=lat.toFixed(2);
+                document.getElementById("longitude").textContent=lon.toFixed(2);
+                document.getElementById("accuracy").textContent=acu;
+
+            })
+        }
+        else{
+            console.log("geolocation is not available");
+
+        }
+
+    </script>
+</body>
+</html>
